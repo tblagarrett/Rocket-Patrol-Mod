@@ -19,12 +19,12 @@ class Play extends Phaser.Scene {
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0)
 
         // add spaceships (x3)
-        this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0, 0)
-        this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0, 0)
-        this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0, 0)
+        this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*5, 'spaceship', 0, 30).setOrigin(0, 0)
+        this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*6 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0, 0)
+        this.ship03 = new Spaceship(this, game.config.width, borderUISize*7 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0, 0)
 
         // add jet
-        this.jet = new Jet(this, 0 - borderUISize * 6, borderUISize*6 + borderPadding*3, 'jet', 0, 60).setOrigin(0, 0)
+        this.jet = new Jet(this, 0 - borderUISize * 6, borderUISize*3 + borderPadding*2, 'jet', 0, 60).setOrigin(0, 0)
 
         // define keys
         keyFIRE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
@@ -103,6 +103,7 @@ class Play extends Phaser.Scene {
         }
         if (this.checkCollision(this.p1Rocket, this.jet)) {
             this.p1Rocket.reset()
+            this.jetExplode(this.jet)
         }
     }
 
@@ -132,6 +133,25 @@ class Play extends Phaser.Scene {
         // score add and text update
         this.adjustTimerBy(game.settings.hitBonus)
         this.p1Score += ship.points
+        this.scoreLeft.text = this.p1Score
+        this.sound.play('sfx-explosion')
+    }
+
+    // Jet uses different assets to explode
+    jetExplode(jet) {
+        // temporarily hide jet
+        jet.alpha = 0
+        // create explosion
+        let boom = this.add.sprite(jet.x, jet.y, 'explosion').setOrigin(0, 0)
+        boom.anims.play('explode')
+        boom.on('animationcomplete', () => {
+            jet.reset()
+            jet.alpha = 1
+            boom.destroy()
+        })
+        // score add and text update
+        this.adjustTimerBy(game.settings.hitBonus)
+        this.p1Score += jet.points
         this.scoreLeft.text = this.p1Score
         this.sound.play('sfx-explosion')
     }
