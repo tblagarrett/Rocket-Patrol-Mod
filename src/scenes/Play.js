@@ -50,7 +50,10 @@ class Play extends Phaser.Scene {
         // GAME OVER flag
         this.gameOver = false
 
-        // 60-second play clock
+        // play clock
+        this.timeLeft = game.settings.gameTimer / 1000;
+        this.timer = this.add.text(game.config.width - borderUISize*2 - borderPadding - 100, borderUISize + borderPadding*2, this.timeLeft, scoreConfig)
+
         scoreConfig.fixedWidth = 0
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5)
