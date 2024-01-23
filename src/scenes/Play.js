@@ -112,6 +112,9 @@ class Play extends Phaser.Scene {
     }
 
     shipExplode(ship) {
+        // The amount of time to add when you hit a ship
+        let hitBonus = 2;
+
         //temporarily hide ship
         ship.alpha = 0
         // create explosion sprite at ship's position
@@ -123,6 +126,7 @@ class Play extends Phaser.Scene {
             boom.destroy()                      // remove explosion sprite
         })
         // score add and text update
+        this.adjustTimerBy(hitBonus)
         this.p1Score += ship.points
         this.scoreLeft.text = this.p1Score
         this.sound.play('sfx-explosion')
@@ -137,7 +141,8 @@ class Play extends Phaser.Scene {
             this.msCounter -= 1000;
 
             // Game Over
-            if (this.timeLeft == 0) {
+            if (this.timeLeft <= 0) {
+                this.timer.text = 0
                 this.gameOver = true
             }
         }
@@ -145,5 +150,6 @@ class Play extends Phaser.Scene {
 
     adjustTimerBy(amount) {
         this.timeLeft += amount
+        this.timer.text = this.timeLeft
     }
 }
