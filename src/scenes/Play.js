@@ -142,8 +142,8 @@ class Play extends Phaser.Scene {
         // temporarily hide jet
         jet.alpha = 0
         // create explosion
-        let boom = this.add.sprite(jet.x, jet.y, 'explosion').setOrigin(0, 0)
-        boom.anims.play('explode')
+        let boom = this.add.sprite(jet.x, jet.y, 'jet-explosion').setOrigin(0, 0)
+        boom.anims.play('jet-explode')
         boom.on('animationcomplete', () => {
             jet.reset()
             jet.alpha = 1

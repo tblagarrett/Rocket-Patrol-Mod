@@ -22,6 +22,12 @@ class Menu extends Phaser.Scene {
             startFrame: 0,
             endFrame: 9
         })
+        this.load.spritesheet('jet-explosion', './assets/img/jet-explosion.png', {
+          frameWidth: 32,
+          frameHeight: 16,
+          startFrame: 0,
+          endFrame: 9
+        })
     }
 
     create() {
@@ -30,6 +36,12 @@ class Menu extends Phaser.Scene {
             key: 'explode',
             frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9, first: 0}),
             frameRate: 30
+        })
+
+        this.anims.create({
+          key: 'jet-explode',
+          frames: this.anims.generateFrameNumbers('jet-explosion', { start: 0, end: 9, first: 0}),
+          frameRate: 30
         })
 
         let menuConfig = {
