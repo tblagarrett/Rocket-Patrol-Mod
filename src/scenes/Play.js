@@ -33,7 +33,7 @@ class Play extends Phaser.Scene {
         this.p1Score = 0
 
         // display score
-        let scoreConfig = {
+        this.scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
             backgroundColor: '#F3B141',
@@ -45,24 +45,29 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig)
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, this.scoreConfig)
 
         // GAME OVER flag
         this.gameOver = false
 
         // play clock
         this.timeLeft = game.settings.gameTimer / 1000;
-        this.timer = this.add.text(game.config.width - borderUISize*2 - borderPadding - 100, borderUISize + borderPadding*2, this.timeLeft, scoreConfig)
-
-        scoreConfig.fixedWidth = 0
-        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5)
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5)
-            this.gameOver = true
-        }, null, this)
+        this.msCounter = 0;
+        this.timer = this.add.text(game.config.width - borderUISize*2 - borderPadding - 100, borderUISize + borderPadding*2, this.timeLeft, this.scoreConfig)
     }
 
-    update() {
+    update(time, delta) {
+        // Countdown the timer
+        if (!this.gameOver) {
+            this.countdown(delta)
+        }
+
+        if (this.gameOver) {
+            this.scoreConfig.fixedWidth = 0
+            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', this.scoreConfig).setOrigin(0.5)
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', this.scoreConfig).setOrigin(0.5)
+        }
+
         // check key input for restart
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyRESET)) {
             this.scene.restart()
@@ -121,5 +126,24 @@ class Play extends Phaser.Scene {
         this.p1Score += ship.points
         this.scoreLeft.text = this.p1Score
         this.sound.play('sfx-explosion')
+    }
+
+    // https://gamedev.stackexchange.com/questions/182242/phaser-3-how-to-trigger-an-event-every-1-second
+    countdown(delta) {
+        this.msCounter += delta;
+        while (this.msCounter > 1000) {
+            this.timeLeft -= 1;
+            this.timer.text = this.timeLeft
+            this.msCounter -= 1000;
+
+            // Game Over
+            if (this.timeLeft == 0) {
+                this.gameOver = true
+            }
+        }
+    }
+
+    adjustTimerBy(amount) {
+        this.timeLeft += amount
     }
 }
