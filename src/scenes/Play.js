@@ -112,9 +112,6 @@ class Play extends Phaser.Scene {
     }
 
     shipExplode(ship) {
-        // The amount of time to add when you hit a ship
-        let hitBonus = 2;
-
         //temporarily hide ship
         ship.alpha = 0
         // create explosion sprite at ship's position
@@ -126,7 +123,7 @@ class Play extends Phaser.Scene {
             boom.destroy()                      // remove explosion sprite
         })
         // score add and text update
-        this.adjustTimerBy(hitBonus)
+        this.adjustTimerBy(game.settings.hitBonus)
         this.p1Score += ship.points
         this.scoreLeft.text = this.p1Score
         this.sound.play('sfx-explosion')
