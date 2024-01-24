@@ -9,6 +9,7 @@ class Menu extends Phaser.Scene {
         this.load.image('spaceship', './assets/img/spaceship.png')
         this.load.image('starfield', './assets/img/starfield.png')
         this.load.image('jet', './assets/img/jet.png')
+        this.load.image('menu', './assets/img/menu.png')
 
         // load audio
         this.load.audio('sfx-select', './assets/sfx/sfx-select.wav')
@@ -56,12 +57,8 @@ class Menu extends Phaser.Scene {
             },
             fixedWidth: 0
         }
-        // display menu text
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'ROCKET PATROL', menuConfig).setOrigin(0.5)
-        this.add.text(game.config.width/2, game.config.height/2, 'use arrows to move & (F) to fire', menuConfig).setOrigin(0.5)
-        menuConfig.backgroundColor = '#00FF00'
-        menuConfig.color = '#000'
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press <- for Novice or -> for Expert', menuConfig).setOrigin(0.5)
+        // display menu
+        this.add.image(0, 0, 'menu').setOrigin(0, 0)
     
         // define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
