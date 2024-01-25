@@ -119,6 +119,12 @@ class Play extends Phaser.Scene {
         }
     }
 
+    playExplosionSound() {
+        let sounds = ['sfx-boom', 'sfx-bam', 'sfx-pop', 'sfx-bigpop']
+        let explosion = sounds[Phaser.Math.Between(0, 3)]
+        this.sound.play(explosion)
+    }
+
     shipExplode(ship) {
         //temporarily hide ship
         ship.alpha = 0
@@ -134,7 +140,7 @@ class Play extends Phaser.Scene {
         this.adjustTimerBy(game.settings.hitBonus)
         this.p1Score += ship.points
         this.scoreLeft.text = this.p1Score
-        this.sound.play('sfx-explosion')
+        this.playExplosionSound()
     }
 
     // Jet uses different assets to explode
@@ -153,7 +159,7 @@ class Play extends Phaser.Scene {
         this.adjustTimerBy(game.settings.hitBonus)
         this.p1Score += jet.points
         this.scoreLeft.text = this.p1Score
-        this.sound.play('sfx-explosion')
+        this.playExplosionSound()
     }
 
     // https://gamedev.stackexchange.com/questions/182242/phaser-3-how-to-trigger-an-event-every-1-second
