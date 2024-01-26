@@ -1,7 +1,7 @@
 /*
 Name: Garrett Blake
 Title: JET GUARD
-Time: 
+Time: 10 Hours
 Mods:
 - Allow the player to control the Rocket after it's fired (1)
 - Create 4 new explosion sound effects and randomize which one plays on impact (3) NOTE: some sounds are a little quiet
